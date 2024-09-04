@@ -10,7 +10,7 @@
 ### Repository Tree
 ```
 📝 Daily Fresh Day
-├─ Documents      # for submitting assignments
+├─ Documents              # for submitting assignments
 └─ Daily-Fresh-Day-app    # app source
 ```
 ### Built With
