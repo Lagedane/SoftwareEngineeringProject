@@ -2,17 +2,16 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { RootStackParamList } from "../types/type";
-
 import WelcomeScreen from "../screen/WelcomeScreen";
 import RegisterScreen from "../screen/RegisterScreen";
 import LoginScreen from "../screen/LoginScreen";
+import TodoListScreen from "../screen/TodoListScreen";
 
 // Create Stack Navigator
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator();
 
 // Define Navigator component
-const Navigator: React.FC = (): React.JSX.Element => {
+const Navigator = () => {
   return (
     <Stack.Navigator initialRouteName="Welcome">
       {/* Welcome screen */}
@@ -31,6 +30,12 @@ const Navigator: React.FC = (): React.JSX.Element => {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      {/* TodoList screen */}
+      <Stack.Screen
+        name="TodoList"
+        component={TodoListScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

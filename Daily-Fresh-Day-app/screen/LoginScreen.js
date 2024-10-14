@@ -17,16 +17,11 @@ import React, { useState } from "react";
 import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../styles/color";
-import { LoginScreenNavigationProp } from "../types/type";
 
-type Props = {
-  navigation: LoginScreenNavigationProp;
-};
-
-const LoginScreen: React.FC<Props> = ({ navigation }): React.JSX.Element => {
-  const [user, setUser] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+const LoginScreen = ({ navigation }) => {
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -124,7 +119,12 @@ const LoginScreen: React.FC<Props> = ({ navigation }): React.JSX.Element => {
               </View>
 
               {/* Login Button */}
-              <TouchableOpacity style={styles.buttonLogin}>
+              <TouchableOpacity
+                style={styles.buttonLogin}
+                onPress={() => {
+                  navigation.navigate("TodoList");
+                }}
+              >
                 <Text style={styles.textButtonLogin}>Login</Text>
               </TouchableOpacity>
             </View>

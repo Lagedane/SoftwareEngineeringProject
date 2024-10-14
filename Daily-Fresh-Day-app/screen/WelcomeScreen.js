@@ -10,15 +10,10 @@ import {
 } from "react-native";
 import React from "react";
 import { useFonts } from "expo-font";
-import { WelcomeScreenNavigationProp } from "../types/type";
 import colors from "../styles/color";
 
-// Define props for WelcomeScreen
-type Props = {
-  navigation: WelcomeScreenNavigationProp;
-};
 
-const WelcomeScreen: React.FC<Props> = ({ navigation }): React.JSX.Element => {
+const WelcomeScreen = ({ navigation }) => {
   {
     /* import font */
   }

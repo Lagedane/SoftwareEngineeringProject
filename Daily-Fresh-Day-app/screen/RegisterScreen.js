@@ -17,23 +17,18 @@ import {
 import React, { useState } from "react";
 import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
-import { RegisterScreenNavigationProp } from "../types/type";
 import colors from "../styles/color";
 
-type Props = {
-  navigation: RegisterScreenNavigationProp;
-};
-
-const RegisterScreen: React.FC<Props> = ({ navigation }): React.JSX.Element => {
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+const RegisterScreen = ({ navigation }) => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] =
-    useState<boolean>(false);
+    useState(false);
 
-  const togglePasswordVisibility = (field: "password" | "confirmPassword") => {
+  const togglePasswordVisibility = (field) => {
     if (field === "password") {
       setShowPassword((prev) => !prev);
     } else if (field === "confirmPassword") {
