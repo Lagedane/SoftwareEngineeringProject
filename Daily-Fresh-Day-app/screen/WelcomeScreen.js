@@ -1,5 +1,4 @@
 import {
-  StyleSheet,
   Text,
   View,
   Image,
@@ -10,8 +9,7 @@ import {
 } from "react-native";
 import React from "react";
 import { useFonts } from "expo-font";
-import colors from "../styles/color";
-
+import { styles } from "../styles/stylesWelcome";
 
 const WelcomeScreen = ({ navigation }) => {
   {
@@ -78,61 +76,3 @@ const WelcomeScreen = ({ navigation }) => {
 };
 
 export default WelcomeScreen;
-
-const styles = StyleSheet.create({
-  bgImage: {
-    width: "100%",
-    height: "100%",
-  },
-  title: {
-    fontFamily: "ReadexPro-Bold",
-    fontSize: 52,
-    color: "#fff",
-  },
-  container: {
-    margin: 30,
-    paddingTop: 30,
-  },
-  imageLogo: {
-    alignItems: "center",
-    width: "100%",
-    height: 140,
-  },
-  paddingImg: {
-    paddingTop: 90,
-  },
-  paddingButton: {
-    paddingTop: 60,
-  },
-  buttonSignUp: {
-    width: "100%",
-    padding: 15,
-    borderRadius: 50,
-    marginBottom: 30,
-    alignItems: "center",
-    backgroundColor: colors.primary,
-  },
-  textSignUp: {
-    color: "#fff",
-    fontFamily: "ReadexPro-Bold",
-    fontSize: 18,
-  },
-  buttonLogin: {
-    width: "100%",
-    padding: 15,
-    borderRadius: 50,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: colors.primary,
-  },
-  textLogin: {
-    color: colors.primary,
-    fontFamily: "ReadexPro-Bold",
-    fontSize: 18,
-  },
-  iconUser: {
-    position: "absolute",
-    top: -35,
-    right: 15,
-  },
-});
