@@ -18,11 +18,34 @@ import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../styles/color";
 import { styles } from "../styles/stylesLogin";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { FIREBASE_AUTH } from "../components/Fire";
 
 const LoginScreen = ({ navigation }) => {
+  const auth = FIREBASE_AUTH;
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  if(FIREBASE_AUTH.currentUser){
+    navigation.navigate("Login");
+  }
+
+  const signIn = async () => {
+    if (user !== "" && password !== "") {
+      signInWithEmailAndPassword(auth, user, password)
+      .then((userCredential) => {
+        // Signed in 
+        navigation.navigate("TodoList", { _user: userCredential.user });
+      })
+      .catch((error) => {
+        setErrorMessage("Sign in failed" + error.message)
+      });      
+    } else {
+        setErrorMessage("Invalid username or password");
+    }
+  }
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -78,6 +101,8 @@ const LoginScreen = ({ navigation }) => {
             {/* Form Container */}
             <View style={styles.content}>
               <Text style={styles.welcomeText}>Welcome{"\n"}Back !</Text>
+              {/* Alert Authentication */}
+              <Text style={styles.errorText}>{errorMessage}</Text>
               {/* Username */}
               <View style={styles.containerInput}>
                 <TextInput
@@ -122,9 +147,7 @@ const LoginScreen = ({ navigation }) => {
               {/* Login Button */}
               <TouchableOpacity
                 style={styles.buttonLogin}
-                onPress={() => {
-                  navigation.navigate("TodoList");
-                }}
+                onPress={signIn}
               >
                 <Text style={styles.textButtonLogin}>Login</Text>
               </TouchableOpacity>

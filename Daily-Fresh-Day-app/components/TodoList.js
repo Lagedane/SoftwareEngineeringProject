@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TouchableOpacity, Modal } from "react-native";
+import { View, Text, TouchableOpacity, Modal } from "react-native";
 import React from "react";
 import TodoModal from "../components/TodoModal";
 import { styles } from "../styles/stylesTodoList";

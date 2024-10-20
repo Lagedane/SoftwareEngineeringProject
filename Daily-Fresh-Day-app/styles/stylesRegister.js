@@ -77,6 +77,11 @@ const styles = StyleSheet.create({
     fontFamily: "ReadexPro-Light",
     fontSize: 20,
   },
+  errorText: {
+    color: "#e82c2c",
+    fontFamily: "ReadexPro-Light",
+    marginStart: 10,
+  },
 });
 
 export { styles };

@@ -10,10 +10,19 @@ import {
 import Colors from "../styles/Colors";
 import { AntDesign } from "@expo/vector-icons";
 import {styles} from "../styles/stylesTodoScreen";
-
 import tempData from "../components/tempData";
 import TodoList from "../components/TodoList";
 import AddListModel from "../components/AddListModal";
+import { signOut } from "firebase/auth";
+import { FIREBASE_AUTH } from "../components/Fire";
+
+// ยัง Log out ไม่ได้
+const Logout = ({ navigation }) => {
+  signOut(FIREBASE_AUTH).then(() =>{
+    navigation.navigate("Welcome");
+  });
+}
+//
 
 const TodoListScreen = ({ navigation }) => {
   return (
@@ -31,12 +40,11 @@ export default class App extends React.Component {
     loading: true,
   };
 
-  /* componentDidMount() {
+  /*componentDidMount() {
     firebase = new Fire((error, user) => {
       if (error) {
         return alert("Uh oh,something went wrong");
       }
-
       firebase.getList((lists) => {
         this.setState({ lists, user }, () => {
           this.setState({ loading: false });
@@ -80,20 +88,22 @@ export default class App extends React.Component {
       }),
     });
   };
-
+  
   render() {
     /* if (this.state.loading) {
       return (
         <View>
-          <ActivityIndicator size="large" color={Colors.black} />
+        <ActivityIndicator size="large" color={Colors.black} />
         </View>
-      );
-    } */
-
-    return (
-      <View style={styles.container}>
+        );
+        } */
+       
+       return (
+         <View style={styles.container}>
         <View style={styles.logoutContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity 
+            onPress={Logout}
+            >
             <Text style={styles.logoutText}>Logout</Text>
           </TouchableOpacity>
         </View>
@@ -107,9 +117,9 @@ export default class App extends React.Component {
             addList={this.addList}
           />
         </Modal>
-        {/* <View>
+        {/*<View>
           <Text>User:{this.state.user.uid}</Text>
-        </View> */}
+        </View>*/}
 
         <View style={{ flexDirection: "row" }}>
           <View style={styles.divider} />
@@ -133,7 +143,7 @@ export default class App extends React.Component {
         <View style={{ height: 275, paddingLeft: 32 }}>
           <FlatList
             data={tempData}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.id.toString}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => this.renderList(item)}

@@ -1,7 +1,6 @@
 // Import necessary components and libraries
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import WelcomeScreen from "../screen/WelcomeScreen";
 import RegisterScreen from "../screen/RegisterScreen";
 import LoginScreen from "../screen/LoginScreen";
