@@ -22,31 +22,35 @@ const firebaseConfig = {
       }
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
-          callback(null, user);
+            callback(null, user);
         } else {
-          firebase
-            .auth()
-            .signInWithEmailAndPassword()
-            .catch(error => {
-                callback(error);
-          });
+            console.log("User is signed out");
+            callback(null, null);
         }
-      });     
+      });  
+    }
+    async signInWithEmail(email, password) {
+      if (!email || !password) {
+          throw new Error("Email and password must be provided.");
+      }
+      return await firebase.auth().signInWithEmailAndPassword(email, password);
+  }
+
+  getLists(callback) {
+    const ref = this.ref;
+    if (!ref) {
+        console.log("Cannot get lists: User is not signed in");
+        return;
     }
 
-    getLists(callback) {
-      let ref = this.ref.orderBy("name") 
-
-      this.unsubscribe = ref.onSnapshot(snapshot => {
-        lists = [];
-    
+    this.unsubscribe = ref.orderBy("name").onSnapshot(snapshot => {
+        let lists = [];
         snapshot.forEach(doc => {
-            lists.push({id: doc.id, ...doc.data()});
-         });
-
-          callback(lists);
+            lists.push({ id: doc.id, ...doc.data() });
         });
-    }
+        callback(lists);
+    });
+}
 
     addList(list) {
       let ref = this.ref;
@@ -61,15 +65,25 @@ const firebaseConfig = {
     }
 
     get userId() {
-      return firebase.auth().currentUser.uid
-    }
+      const user = firebase.auth().currentUser;
+      if (user) {
+          return user.uid;
+      }
+      console.log("No user is signed in.");
+      return null;
+  }
 
     get ref() {
+      const userId = this.userId;
+      if (!userId) {
+        console.log("Cannot access Firestore reference: User is not signed in");
+        return null;
+      }
       return firebase
-      .firestore()
-      .collection("users")
-      .doc(this.userId)
-      .collection("lists");
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .collection("lists");
     }
 
     detach() {

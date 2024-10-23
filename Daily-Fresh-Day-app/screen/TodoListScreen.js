@@ -6,19 +6,20 @@ import {
   View,
   Modal,
   ActivityIndicator,
-  Alert
+  Alert,
 } from "react-native";
 import Colors from "../styles/Colors";
 import { AntDesign } from "@expo/vector-icons";
-import {styles} from "../styles/stylesTodoScreen";
+import { styles } from "../styles/stylesTodoScreen";
 import TodoList from "../components/TodoList";
 import AddListModel from "../components/AddListModal";
 import { Fire, FIREBASE_AUTH } from "../components/Fire";
 import { signOut } from "firebase/auth";
-import { LogBox } from 'react-native';
+import { LogBox } from "react-native";
+import WelcomeScreen from "./WelcomeScreen";
 
 LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
+  "Non-serializable values were found in the navigation state",
 ]);
 
 const TodoListScreen = ({ navigation }) => {
@@ -38,11 +39,12 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
-     firebase = new Fire((error, user) => {
+    firebase = new Fire((error, user) => {
       if (error) {
+        console.log(error)
         return alert("Uh oh,something went wrong");
       }
-      firebase.getLists(lists => {
+      firebase.getLists((lists) => {
         this.setState({ lists, user }, () => {
           this.setState({ loading: false });
         });
@@ -60,18 +62,38 @@ export default class App extends React.Component {
     this.setState({ addTodoVisible: !this.state.addTodoVisible });
   }
 
-  renderList = list => {
+  renderList = (list) => {
     return <TodoList list={list} updateList={this.updateList} />;
   };
 
   Logout = async () => {
-    signOut(FIREBASE_AUTH).then(() => {
-      Alert.alert('User Signed out!');
+    /*  signOut(FIREBASE_AUTH).then(() => {
+        Alert.alert("User Signed out!");
+        navigation(WelcomeScreen);
+      });
+    */
+      // firebase.auth().signOut().then(function() {
+      //   console.log('Signed Out');
+      // }, function(error) {
+      //   console.error('Sign Out Error', error);
+      // });
+    /* console.log(FIREBASE_AUTH.currentUser.email);
+    const result = await signOut(FIREBASE_AUTH);
+    console.log("entered sign out functions");
+    navigation(WelcomeScreen);
+    console.log(FIREBASE_AUTH.currentUser.email); */
+    try {
+      await signOut(FIREBASE_AUTH);
+      Alert.alert("User Signed out!");
+      this.setState({ user: null });
+      this.props.navigation.navigate("Welcome");
+    } catch (error) {
+      console.error("Sign Out Error", error.message);
+      Alert.alert("Error logging out", error.message);
     }
-    );
   };
 
-  addList = list => {
+  addList = (list) => {
     /*this.setState({
       lists: [
         ...this.state.lists,
@@ -85,7 +107,7 @@ export default class App extends React.Component {
     });
   };
 
-  updateList = list => {
+  updateList = (list) => {
     /*this.setState({
       lists: this.state.lists.map(item => {
         return item.id === list.id ? list : item;
@@ -93,20 +115,20 @@ export default class App extends React.Component {
     });*/
     firebase.updateList(list);
   };
-  
+
   render() {
-       if (this.state.loading) {
-        return (
-          <View style={styles.container}>
+    if (this.state.loading) {
+      return (
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
           <ActivityIndicator size="large" color={Colors.blue} />
-          </View>
-        );
-        } 
-       
-       return (
-         <View style={styles.container}>
+        </View>
+      );
+    }
+
+    return (
+      <View style={styles.container}>
         <View style={styles.logoutContainer}>
-          <TouchableOpacity onPress={ this.Logout }>
+          <TouchableOpacity onPress={this.Logout}>
             <Text style={styles.logoutText}>Logout</Text>
           </TouchableOpacity>
         </View>
@@ -119,7 +141,7 @@ export default class App extends React.Component {
             closeModal={() => this.toggleAddTodoModal()}
             addList={this.addList}
           />
-        </Modal>        
+        </Modal>
 
         <View style={{ flexDirection: "row" }}>
           <View style={styles.divider} />
@@ -143,7 +165,7 @@ export default class App extends React.Component {
         <View style={{ height: 275, paddingLeft: 32 }}>
           <FlatList
             data={this.state.lists}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={(item) => item.id.toString()}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => this.renderList(item)}
