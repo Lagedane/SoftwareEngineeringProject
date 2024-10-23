@@ -56,15 +56,15 @@ const styles = StyleSheet.create({
   todo: {
     color: colors.black,
     fontWeight: "700",
-    fontSize: 16,
+    fontSize: 16
   },
   deleteButton: {
     flex: 1,
     backgroundColor: colors.red,
     justifyContent: "center",
     alignItems: "center",
-    width: 80,
-  },
+    width: 80
+  }
 });
 
 export { styles };

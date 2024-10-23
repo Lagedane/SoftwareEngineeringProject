@@ -1,8 +1,7 @@
-import firebase from "firebase/compat/app";
+import firebase  from 'firebase/compat';
 import "@firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyD6M_kqKBNTLQ1s_gmWDimV6dyn4JtUOvk",
@@ -13,33 +12,74 @@ const firebaseConfig = {
     appId: "1:92239574986:web:650b88d537135f3d9e0133"
   };
   
-/*  class Fire {
+  class Fire {
     constructor(callback) {
-      this.init(callback)
+      this.init(callback);
     }
     init(callback) {
       if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig)
+        firebase.initializeApp(firebaseConfig);
       }
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
-          callback(null, user)
+          callback(null, user);
         } else {
           firebase
             .auth()
-            .signInAnonymously()
+            .signInWithEmailAndPassword()
             .catch(error => {
-                callback(error)
+                callback(error);
           });
         }
-      });
+      });     
     }
-  }*/
 
-  // Initialize Firebase
-  export const FIREBASE_APP = initializeApp(firebaseConfig);
-  export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
-  // Initialize Cloud Firestore and get a reference to the service
-  export const FIREBASE_DB = getFirestore(FIREBASE_APP);
+    getLists(callback) {
+      let ref = this.ref.orderBy("name") 
 
-  //export default Fire;
+      this.unsubscribe = ref.onSnapshot(snapshot => {
+        lists = [];
+    
+        snapshot.forEach(doc => {
+            lists.push({id: doc.id, ...doc.data()});
+         });
+
+          callback(lists);
+        });
+    }
+
+    addList(list) {
+      let ref = this.ref;
+
+      ref.add(list);
+    }
+
+    updateList(list) {
+      let ref = this.ref;
+
+      ref.doc(list.id).update(list);
+    }
+
+    get userId() {
+      return firebase.auth().currentUser.uid
+    }
+
+    get ref() {
+      return firebase
+      .firestore()
+      .collection("users")
+      .doc(this.userId)
+      .collection("lists");
+    }
+
+    detach() {
+      this.unsubscribe();
+    }
+  }
+
+  // Initialize Firebase App
+  const FIREBASE_APP = initializeApp(firebaseConfig);
+ 
+  const FIREBASE_AUTH = getAuth(FIREBASE_APP);
+
+  export { FIREBASE_APP, FIREBASE_AUTH, Fire };

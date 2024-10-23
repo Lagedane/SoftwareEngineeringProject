@@ -20,10 +20,14 @@ import colors from "../styles/color";
 import { styles } from "../styles/stylesLogin";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { FIREBASE_AUTH } from "../components/Fire";
+import { LogBox } from 'react-native';
 
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 const LoginScreen = ({ navigation }) => {
   const auth = FIREBASE_AUTH;
-  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -33,11 +37,11 @@ const LoginScreen = ({ navigation }) => {
   }
 
   const signIn = async () => {
-    if (user !== "" && password !== "") {
-      signInWithEmailAndPassword(auth, user, password)
+    if (email !== "" && password !== "") {
+      await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in 
-        navigation.navigate("TodoList", { _user: userCredential.user });
+        navigation.navigate("TodoList", { user:userCredential.user});
       })
       .catch((error) => {
         setErrorMessage("Sign in failed" + error.message)
@@ -107,10 +111,10 @@ const LoginScreen = ({ navigation }) => {
               <View style={styles.containerInput}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Username"
+                  placeholder="Email"
                   placeholderTextColor={colors.textPrimary}
-                  value={user}
-                  onChangeText={setUser}
+                  value={email}
+                  onChangeText={setEmail}
                 />
                 <TouchableOpacity disabled>
                   <Ionicons

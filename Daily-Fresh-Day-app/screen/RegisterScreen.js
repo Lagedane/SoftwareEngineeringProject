@@ -19,7 +19,11 @@ import colors from "../styles/color";
 import { styles } from "../styles/stylesRegister";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FIREBASE_AUTH } from "../components/Fire";
+import { LogBox } from 'react-native';
 
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 const RegisterScreen = ({ navigation }) => {
   const auth = FIREBASE_AUTH;
   const [username, setUsername] = useState("");
@@ -70,10 +74,10 @@ const RegisterScreen = ({ navigation }) => {
 
   const signUp = async () => {
     if (password === confirmPassword) {
-      createUserWithEmailAndPassword(auth, email, password)
+      await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed up 
-        navigation.navigate("Login", { user: userCredential.user });
+        // Signed in 
+        navigation.navigate("Login", { user:userCredential.user});
       })
       .catch((error) => {
         setValidationUsername(error.message);
@@ -89,14 +93,6 @@ const RegisterScreen = ({ navigation }) => {
     } else if (field === "confirmPassword") {
       setShowConfirmPassword((prev) => !prev);
     }
-  };
-
-  const handleSignIn = () => {
-    // test
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Confirm Password:", confirmPassword);
   };
 
   {

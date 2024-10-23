@@ -20,7 +20,7 @@ export default class TodoModal extends React.Component {
     newTodo: "",
   };
 
-  toggleTodoCompleted = (index) => {
+  toggleTodoCompleted = index => {
     let list = this.props.list;
     list.todos[index].completed = !list.todos[index].completed;
 
@@ -30,7 +30,7 @@ export default class TodoModal extends React.Component {
   addTodo = () => {
     let list = this.props.list;
 
-    if (!list.todos.some((todo) => todo.title === this.state.newTodo)) {
+    if (!list.todos.some(todo => todo.title === this.state.newTodo)) {
       list.todos.push({ title: this.state.newTodo, completed: false });
 
       this.props.updateList(list);
@@ -40,9 +40,9 @@ export default class TodoModal extends React.Component {
     Keyboard.dismiss();
   };
 
-  deleteTodo = (index) => {
+  deleteTodo = index => {
     let list = this.props.list;
-    list.todo.splice(index, 1);
+    list.todos.splice(index, 1);
 
     this.props.updateList(list);
   };
@@ -67,7 +67,7 @@ export default class TodoModal extends React.Component {
               {
                 textDecorationLine: todo.completed ? "line-through" : "none",
                 color: todo.completed ? Colors.grey : Colors.black,
-              },
+              }
             ]}
           >
             {todo.title}
@@ -81,13 +81,13 @@ export default class TodoModal extends React.Component {
     const scale = dragX.interpolate({
       inputRange: [-100, 0],
       outputRange: [1, 0.9],
-      extrapolate: "clamp",
+      extrapolate: "clamp"
     });
 
     const opacity = dragX.interpolate({
       inputRange: [-100, -20, 0],
       outputRange: [1, 0.9, 0],
-      extrapolate: "clamp",
+      extrapolate: "clamp"
     });
 
     return (
@@ -97,7 +97,7 @@ export default class TodoModal extends React.Component {
             style={{
               color: Colors.white,
               fontWeight: "800",
-              transform: [{ scale }],
+              transform: [{ scale }]
             }}
           >
             Delete
@@ -112,6 +112,7 @@ export default class TodoModal extends React.Component {
 
     const taskCount = list.todos.length;
     const completedCount = list.todos.filter((todo) => todo.completed).length;
+
     return (
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <SafeAreaView style={styles.container}>
@@ -126,7 +127,7 @@ export default class TodoModal extends React.Component {
             style={[
               styles.section,
               styles.header,
-              { borderBottomColor: list.color },
+              { borderBottomColor: list.color }
             ]}
           >
             <View>
@@ -141,7 +142,7 @@ export default class TodoModal extends React.Component {
             <FlatList
               data={list.todos}
               renderItem={({ item, index }) => this.renderTodo(item, index)}
-              keyExtractor={(_, index) => index.toString()}
+              keyExtractor={item => item.title}
               showsVerticalScrollIndicator={false}
             />
           </View>
